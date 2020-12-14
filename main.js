@@ -18,8 +18,8 @@ function draw(){
     drawRect(0+Camera.x,0+Camera.y,w/Camera.scale,h/Camera.scale,"#4057a7",true,"#4057a7",bgalpha);
 
     for(var x=0;x<world.map.length;x++){
-        if(world.map[x] != 0){
-            if(world.map[x] < 10){
+        if(world.map[x] != 0 && world.map[x]!= undefined){
+            if(world.map[x][0]!=undefined){
                 drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"white",1,"white",1)
             }else{
                 drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"red",1,"red",1)

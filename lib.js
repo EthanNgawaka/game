@@ -2,7 +2,6 @@
 A small, simple javascript library for game making, currently dosent support images or sound.
 has drawing functions for most shapes and input handing
 */
-
 var canvas = document.getElementById("main");
 canvas.setAttribute('draggable', false);
 var entirePage = document.getElementById("wholePage");
@@ -11,6 +10,8 @@ var w = canvas.width;
 var c = canvas.getContext("2d"); //c means context
 var scale = 1;
 document.addEventListener('contextmenu', event => event.preventDefault());
+
+
 
 var logkeys = false; //log key presses
 

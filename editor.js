@@ -6,7 +6,7 @@ if(grid[0]==undefined){
 }
 
 console.log(grid)
-var type = 1;
+var type = [];
 function editor(){
     canvas.height = w;
     h = w;
@@ -14,45 +14,24 @@ function editor(){
     var xnum = 0;
     var ynum = 0;
     for(var x of grid){
-        if(x == 1){
+        if(x!=0){
             drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100),4,8,"blue",1,"blue",1,false);
+            for(var i of x){
+                if(i == 1){
+                    drawRect(xnum*(w/100),ynum*(h/100),2,8,"blue",1,"blue",1,false);
+                }
+                if(i == 2){
+                    drawRect(xnum*(w/100)+6,ynum*(h/100),2,8,"blue",1,"blue",1,false);
+                }
+                if(i == 3){
+                    drawRect(xnum*(w/100),ynum*(h/100)+6,8,2,"blue",1,"blue",1,false);
+                }
+                if(i == 4){
+                    drawRect(xnum*(w/100),ynum*(h/100),8,2,"blue",1,"blue",1,false);
+                }
+            }
         }
-        if(x == 2){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100)+4,ynum*(h/100),4,8,"blue",1,"blue",1,false);
-        }
-        if(x == 3){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100)+4,8,4,"blue",1,"blue",1,false);
-        }
-        if(x == 4){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100),8,4,"blue",1,"blue",1,false);
-        }
-        if(x == 5){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",1,false);
-        }
-        if(x == 6){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100),8,4,"blue",1,"blue",1,false);
-            drawRect(xnum*(w/100),ynum*(h/100),4,8,"blue",1,"blue",1,false);
-        }
-        if(x == 7){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100),8,4,"blue",1,"blue",1,false);
-            drawRect(xnum*(w/100)+4,ynum*(h/100),4,8,"blue",1,"blue",1,false);
-        }
-        if(x == 8){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100)+4,ynum*(h/100),4,8,"blue",1,"blue",1,false);
-            drawRect(xnum*(w/100),ynum*(h/100)+4,8,4,"blue",1,"blue",1,false);
-        }
-        if(x == 9){
-            drawRect(xnum*(w/100),ynum*(h/100),8,8,"blue",1,"blue",0.4,false);
-            drawRect(xnum*(w/100),ynum*(h/100),4,8,"blue",1,"blue",1,false);
-            drawRect(xnum*(w/100),ynum*(h/100)+4,8,4,"blue",1,"blue",1,false);
-        }
+        
         
         xnum++;
         if(xnum >= 100){
@@ -62,19 +41,43 @@ function editor(){
     }
 
     if(mouse.button.left){
-        grid[Math.floor(mouse.y/8)*100+Math.floor(mouse.x/8)] = type
-        console.log(type)
-        
+        grid[Math.floor(mouse.y/8)*100+Math.floor(mouse.x/8)] = type;
     }
-    var wallTypes = 10
-    for(var x=0;x<wallTypes;x++){
-        if(checkKey("Digit"+x)){type=x};
+
+    if(type!==0){
+        if(checkKey("Digit1")){
+            type = arrayRemove(type,1);
+            type.push(1);
+        }
+        if(checkKey("Digit2")){
+            type = arrayRemove(type,2);
+            type.push(2);
+        }
+        if(checkKey("Digit3")){
+            type = arrayRemove(type,3);
+            type.push(3);
+        }
+        if(checkKey("Digit4")){
+            type = arrayRemove(type,4);
+            type.push(4);
+        }
     }
+    
+    if(checkKey("KeyR")){type=[]}
     if(checkKey("Digit0")){type=0}
     if(checkKey("Space")){
         var output = '[';
         for(var x of grid){
-            output+=x;
+            if(x!=0&&x[0]!=undefined){
+                output+='['
+                for(var i of x){
+                    output+=i;
+                    output+=','
+                }
+                output+=']'
+            }else{
+                output+=x;
+            }
             output+=",";
         }
         output+="]"
