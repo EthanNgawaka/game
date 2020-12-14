@@ -5,16 +5,14 @@ itemDict = {
 }
 
 world = {
-    rows: 5,
-    columns: 8,
+    rows: 4,
+    columns: 6,
     tileSize: 44,
-    map: [
-        //1: left    2: right    3:bottom    4:top 
-        5,3,3,3,3,3,3,5,
-        2,0,0,0,0,0,0,1,
-        2,0,0,0,0,0,0,1,
-        2,0,0,0,0,0,0,1,
-        5,4,4,4,4,4,4,5,
+    map: [ //1 left | 2 right | 3 bottom | 4 top
+        0,0,0,0,0,0,
+        0,0,0,[1,3],0,0,
+        0,0,0,0,0,0,
+        0,0,0,0,0,0
     ]
 }
 
@@ -59,10 +57,10 @@ class Player{
             3:function(row,col){player.bottomCollision(row)},
             4:function(row,col){player.topCollision(row)},
             5:function(row,col){
-                player.leftCollision(col);
-                player.rightCollision(col);
-                player.bottomCollision(row);
-                player.topCollision(row);
+                player.rightCollision(row)
+                player.bottomCollision(row)
+                player.topCollision(row)
+                player.leftCollision(row)
             },
         }
     }
@@ -121,16 +119,19 @@ class Player{
         for(var x of rectTilePos){
             var index = x[0] * world.columns + x[1];
             if(world.map[index]!=0 && world.map[index]!=undefined){
-                if(world.map[index] == 1 || world.map[index] == 2 || world.map[index] == 3 || world.map[index] == 4 || world.map[index] == 5){
-                    this.collisionTiles[world.map[index]](x[0],x[1]);
-                }else{
-                    for(var i in itemDict){
-                        if(world.map[index] == i){
-                            this.collisionTiles[5](x[0],x[1]);
+                for(var y of world.map[index]){
+                    if(y < 5){
+                        this.collisionTiles[y](x[0],x[1]);
+                    }else{
+                        for(var i in itemDict){
+                            if(world.map[index] == i){
+                                this.collisionTiles[5](x[0],x[1]);
+                            }
+                            
                         }
-                        
                     }
                 }
+                
                 this.collidedTile = world.map[index];
                 test = 1;
             }

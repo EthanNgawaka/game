@@ -1,7 +1,8 @@
-//testingg
 var bgalpha = 1;
 var cameraLocked = false;
 var particleManager = new ParticleHandler();
+
+var launchEditor = 0;
 
 var player = new Player();
 var dialogueBoxHandler = new DialogueBoxHandler();
@@ -18,7 +19,7 @@ function draw(){
 
     for(var x=0;x<world.map.length;x++){
         if(world.map[x] != 0){
-            if(world.map[x] == 1 || world.map[x] == 2 || world.map[x] == 3 || world.map[x] == 4 || world.map[x] == 5){
+            if(world.map[x] < 10){
                 drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"white",1,"white",1)
             }else{
                 drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"red",1,"red",1)
@@ -52,10 +53,13 @@ function updateCamera(){
 }
 
 function main(){
-    updateCamera();
-    update();
-    draw();
-
+    if(!launchEditor){
+        updateCamera();
+        update();
+        draw();
+    }else{
+        editor();
+    }
 
 }
 

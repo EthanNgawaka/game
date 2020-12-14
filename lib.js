@@ -455,7 +455,7 @@ function drawLine(x1,y1,x2,y2,col){
     c.lineTo(x2*scale-Camera.x*Camera.scale,y2*scale-Camera.y*Camera.scale);
     c.stroke();
 }
-function drawRect(x,y,w,h,col,fill,fillcolor,alpha){
+function drawRect(x,y,w,h,col,fill,fillcolor,alpha,outline=true){
     c.save();
     c.strokeStyle = col;
     c.globalAlpha = alpha;
@@ -464,8 +464,10 @@ function drawRect(x,y,w,h,col,fill,fillcolor,alpha){
     if (fill){
         c.fillStyle = fillcolor;
         c.fill();
-    }
-    c.stroke();
+	}
+	if(outline){
+		c.stroke();
+	}
     c.restore();
 }
 function drawCircle(x,y,r,col,fill,fillcolor,alpha){
