@@ -66,3 +66,4 @@ class DialogueBoxHandler{
     }
 
 }
+var dialogueBoxHandler = new DialogueBoxHandler();

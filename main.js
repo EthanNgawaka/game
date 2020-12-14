@@ -5,7 +5,6 @@ var particleManager = new ParticleHandler();
 var launchEditor = 0;
 
 var player = new Player();
-var dialogueBoxHandler = new DialogueBoxHandler();
 
 var interactableList = [
     //{x:400,y:50,w:50,h:50,type:"text",text:"ooga booga bitch a rooney"},
