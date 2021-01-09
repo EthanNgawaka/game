@@ -4,6 +4,10 @@ var particleManager = new ParticleHandler();
 
 var launchEditor = 0;
 
+var tileset = new image('Assets/ground_tiles.png');
+
+world = createWorld(map,'Assets/ground_tiles.png');
+console.log(world)
 var player = new Player();
 
 var interactableList = [
@@ -12,22 +16,66 @@ var interactableList = [
 ];
 
 
+var alphaWall = false;
+var drawAlphaWallTest = 1;
+
+function drawAlphaWall(index,xy,x,a){
+    if(Math.floor(xy[1]/world.tileSize)*world.columns+Math.floor(xy[0]/world.tileSize)==index){
+        tileset.drawImg(xy[0],xy[1],world.tileSize,world.tileSize,a,world.tiles[x])
+        drawAlphaWallTest = 0;
+    }
+
+}
+
 
 function draw(){
     drawRect(0+Camera.x,0+Camera.y,w/Camera.scale,h/Camera.scale,"#4057a7",true,"#4057a7",bgalpha);
 
-    for(var x=0;x<world.map.length;x++){
-        if(world.map[x] != 0 && world.map[x]!= undefined){
-            if(world.map[x][0]!=undefined){
-                drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"white",1,"white",1)
-            }else{
-                drawRect((x-(world.columns*Math.floor(x/world.columns)))*world.tileSize,Math.floor(x/world.columns)*world.tileSize,world.tileSize,world.tileSize,"red",1,"red",1)
+    for(var i of world.map){
+        if(i[1] == 'obstacles'){
+            particleManager.draw();
+        }
+        if(i[1] == 'objects'){
+            player.draw();
+        }else{
+            var xy = [0,0];
+            for(var x of i[0]){
+                if(x!=0 && AABBCollision(xy[0],xy[1],w,h,player.x-w/2-16,player.y-h/2-16,w+64,h+64)){
+                    drawAlphaWallTest = 1;
+                    if(alphaWall && i[1] == 'wallTops'){
+                        var temp = alphaWall;
+                        drawAlphaWall(alphaWall,xy,x,0.2);
+                        drawAlphaWall(alphaWall-1,xy,x,0.4);
+                        drawAlphaWall(alphaWall-2,xy,x,0.7);
+                        drawAlphaWall(alphaWall+1,xy,x,0.4);
+                        drawAlphaWall(alphaWall+2,xy,x,0.7);
+                        for(var z = 0; z <= 1; z++){
+                            alphaWall+= -100 + 300*z
+                            drawAlphaWall(alphaWall,xy,x,0.2);
+                            drawAlphaWall(alphaWall-1,xy,x,0.4);
+                            drawAlphaWall(alphaWall+1,xy,x,0.4);
+                        }
+                        alphaWall = temp;
+
+                    }
+                    if(drawAlphaWallTest){
+                        tileset.drawImg(xy[0],xy[1],world.tileSize,world.tileSize,1,world.tiles[x])
+                    }
+                }
+                xy[0]+=world.tileSize;
+                if(xy[0] >= world.tileSize * world.columns){
+                    xy[0] = 0;
+                    xy[1] += world.tileSize;
+                }
             }
         }
     }
-
-    particleManager.draw();
-    player.draw();
+    drawRect(0,0,100+Camera.x,100+Camera.y,'white',1,'white',1)
+    showText("alphaWall: "+alphaWall, Camera.x+2,Camera.y+10,10)
+    showText("Camera.x: "+Camera.x, Camera.x+2,Camera.y+20,10)
+    showText("Camera.y: "+Camera.y, Camera.x+2,Camera.y+30,10)
+    showText("collidedTileType: "+player.collidedTile, Camera.x+2,Camera.y+40,10)
+    showText("collidedTileIndex: "+player.collidedTileIndex, Camera.x+2,Camera.y+50,10)
     dialogueBoxHandler.draw();
     
 }

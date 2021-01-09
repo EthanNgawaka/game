@@ -378,13 +378,17 @@ class image{
 		this.img.src=imageLocation;
 	}	
 
-	drawImg(X,Y,W,H, alpha){
+	drawImg(X,Y,W,H,alpha,tileSheetXY = []){
 		c.save();
 		c.imageSmoothingEnabled = false;
         c.webkitImageSmoothingEnabled = false;
         c.mozImageSmoothingEnabled = false;
 		c.globalAlpha = alpha;
-		c.drawImage(this.img, (X*scale-Camera.x)*Camera.scale,(Y*scale-Camera.y)*Camera.scale, W*scale*Camera.scale,H*scale*Camera.scale);
+		if(tileSheetXY==[]){
+			c.drawImage(this.img, (X*scale-Camera.x)*Camera.scale,(Y*scale-Camera.y)*Camera.scale, W*scale*Camera.scale,H*scale*Camera.scale);
+		}else{
+			c.drawImage(this.img,tileSheetXY[0],tileSheetXY[1],tileSheetXY[2],tileSheetXY[2],(X*scale-Camera.x)*Camera.scale,(Y*scale-Camera.y)*Camera.scale, W*scale*Camera.scale,H*scale*Camera.scale);
+		}
 		c.globalAlpha = 1;
 		c.restore();
 	}
@@ -533,4 +537,4 @@ function AABBCollision(x1,y1,w1,h1,x2,y2,w2,h2){
     }
         
 }
-var Camera = {x:0,y:0,scale:1,target:{x:0,y:0}};
+var Camera = {x:0,y:0,scale:2,target:{x:0,y:0}};

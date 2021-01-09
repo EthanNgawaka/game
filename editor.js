@@ -5,7 +5,7 @@ if(grid[0]==undefined){
     }
 }
 
-console.log(grid)
+//console.log(grid)
 var type = [];
 var placingItem =false;
 var aKeyDown = false;
